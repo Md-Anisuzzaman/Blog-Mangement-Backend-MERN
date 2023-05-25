@@ -17,8 +17,8 @@ exports.registerUser = async (req, res) => {
             email,
             password: securePass
         });
-        console.log(newUser);
         const storeUser = await newUser.save();
+        console.log(storeUser);
         res.json(storeUser)
     } catch (error) {
         res.status(404).send(error)
@@ -81,6 +81,21 @@ exports.singleUser = async (req, res) => {
         else {
             res.json({ message: "User not found" })
         }
+    } catch (error) {
+        res.status(406).json({ message: error.message });
+    }
+}
+exports.getUsers = async (req, res) => {
+    try {
+
+        const allUers = await userModel.find()
+        if (allUers) {
+            res.status(200).json(allUers)
+        }
+        else {
+            res.status(422).json({ message: "Users not found" })
+        }
+
     } catch (error) {
         res.status(406).json({ message: error.message });
     }

@@ -50,6 +50,7 @@ Router.post("/api/registration",emailLowerCase,
 
     , userController.registerUser);
 Router.get("/api/fetchuser/:id", userController.singleUser);
+Router.get("/api/fetchusers", userController.getUsers);
 Router.post("/api/updateuser", userController.editUser);
 Router.post("/api/deleteuser", userController.deleteUser);
 

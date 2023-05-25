@@ -2,9 +2,10 @@ const express = require('express');
 const Router = express.Router();
 const blogController = require("../controller/blogs.controler");
 
-Router.post("/createblog", blogController.createBlog);
-Router.get("/fetchblog", blogController.singleBlog);
-Router.post("/updateblog", blogController.editBlog);
-Router.post("/deleteblog", blogController.deleteBlog);
+Router.post("/api/createblog",blogController.createBlog);
+Router.get("/api/fetchblog/:id", blogController.singleBlog);
+Router.get("/api/fetchblogs", blogController.getBlogs);
+Router.post("/api/updateblog", blogController.editBlog);
+Router.post("/api/deleteblog", blogController.deleteBlog);
 
-module.exports = Router;
+module.exports = Router
