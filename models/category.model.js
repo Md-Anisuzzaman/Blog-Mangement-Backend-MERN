@@ -9,9 +9,14 @@ module.exports = mongoose.model('categories', mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: "users",
     },
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: "users",
+    },
     status: {
         type: Boolean,
         default: true
     }
 
 }, { timestamps: true }));
+

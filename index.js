@@ -6,7 +6,7 @@ const { Db_url } = require('./config/db.config');
 const userRouter = require("./routers/user.router");
 const blogRouter = require("./routers/blogs.router");
 const translatorRouter = require("./routers/translator.router");
-const writterRouter = require("./routers/writter.router");
+const authorRouter = require("./routers/author.router");
 const categoryRouter = require("./routers/category.router");
 
 const port = 7000;
@@ -32,7 +32,7 @@ try {
 server.use(userRouter);
 server.use(blogRouter);
 server.use(translatorRouter);
-server.use(writterRouter);
+server.use(authorRouter);
 server.use(categoryRouter);
 
 

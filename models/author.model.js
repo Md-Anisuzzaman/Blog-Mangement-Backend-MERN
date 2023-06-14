@@ -1,7 +1,7 @@
 const { default: mongoose,Schema } = require("mongoose");
 const userModel = require("./user.model");
 
-module.exports = mongoose.model('writters', mongoose.Schema({
+module.exports = mongoose.model('authors', mongoose.Schema({
     name: {
         type: String,
         required: true,

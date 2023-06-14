@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const { Db_url } = require("../config/db.config");
-const writterModel = require("../models/writter.model");
+const authorModel = require("../models/author.model");
 
-let writters = [
+let authors = [
     {
         name: "Hasan",
         creator: "646226ffee181ff768e5cf65"
@@ -30,8 +30,8 @@ module.exports = () => mongoose.connect(Db_url)
     .then(async () => {
         // console.log("\n");
         // console.log("writter sending");
-        await writterModel.deleteMany({});
-        let response = await writterModel.insertMany(writters);
+        await authorModel.deleteMany({});
+        let response = await authorModel.insertMany(authors);
         // console.log(response);
 
         // console.log("writter saved successfully");

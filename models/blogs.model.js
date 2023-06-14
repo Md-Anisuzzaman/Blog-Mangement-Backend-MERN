@@ -1,5 +1,5 @@
 const { mongoose, Schema } = require('mongoose');
-const writerModel = require("./writter.model");
+const writerModel = require("./author.model");
 
 module.exports = mongoose.model('blogs', mongoose.Schema({
     title: {
@@ -19,21 +19,21 @@ module.exports = mongoose.model('blogs', mongoose.Schema({
         required: true,
     },
     creator: {
-        type: Schema.Types.ObjectId,
-        ref: "user"
+        type: [Schema.Types.ObjectId],
+        ref: "users"
     },
-    writter: {
-        type: Schema.Types.ObjectId,
-        ref: "writters",
+    author: {
+        type: [Schema.Types.ObjectId],
+        ref: "authors",
     },
 
     translator: {
-        type: Schema.Types.ObjectId,
+        type: [Schema.Types.ObjectId],
         ref: 'translators',
     },
+ 
     thumb_image: {
         type: String,
-        default: false,
     },
     related_images: [String],
     published: {

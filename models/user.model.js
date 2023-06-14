@@ -23,4 +23,4 @@ module.exports = mongoose.model("users", mongoose.Schema({
     creator: {
         type: String,
     }
-}, { timwstamps: true }));
+}, { timestamps: true }));

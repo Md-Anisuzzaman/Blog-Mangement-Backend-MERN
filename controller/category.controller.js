@@ -1,3 +1,5 @@
+const categoryModel = require("../models/category.model");
+
 exports.creatCategory = async (req, res) => {
     console.log("hello from creatCategory controller");
     res.send("hello from creatCategory controller")
@@ -14,4 +16,9 @@ exports.deleteCategory = async (req, res) => {
 exports.singleCategory = async (req, res) => {
     console.log("hello from singleCategory controller");
     res.send("hello from singleCategory controller")
+}
+exports.getCategory = async (req, res) => {
+    const categories = await categoryModel.find({})
+    const response = categories.map((category) => category._id)
+    res.json(response)
 }
