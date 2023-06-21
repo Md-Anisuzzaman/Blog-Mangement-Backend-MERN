@@ -2,6 +2,7 @@ const categoryModel = require("../models/category.model");
 const authorModel = require("../models/author.model");
 const translatorModel = require("../models/translator.model");
 const userModel = require("../models/user.model");
+const blogsModel = require("../models/blogs.model");
 
 
 module.exports.getUsersId = async function () {
@@ -29,6 +30,26 @@ module.exports.getTranslatorId = async function () {
     const result = translators.map(translator => translator.id)
     const randomValue = result[Math.floor(Math.random() * result.length)];
     return randomValue
+}
+module.exports.getBlogId = async function () {
+    const blogs = await blogsModel.find()
+    const result = blogs.map(blog => blog.id)
+    const randomValue = result[Math.floor(Math.random() * result.length)];
+    return randomValue
+}
+
+module.exports.getCurrTime = function () {
+    const time = new Date().toLocaleDateString('en-US', {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        // second: 'numeric'
+    });
+
+    return time
 }
 
 
