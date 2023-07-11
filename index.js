@@ -29,7 +29,7 @@ try {
 
 /* All router call from there */
 
-server.use(userRouter);
+server.use("/api/user",userRouter);
 server.use(blogRouter);
 server.use(translatorRouter);
 server.use(authorRouter);

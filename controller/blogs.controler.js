@@ -39,6 +39,7 @@ exports.createBlog = async (req, res) => {
         res.status(404).json({ error: error.message });
     }
 }
+
 exports.editBlog = async (req, res) => {
     try {
         const { id, title } = req.body

@@ -1,11 +1,12 @@
 const { body } = require('express-validator');
 const express = require('express');
+
 const Router = express.Router();
 const userController = require("../controller/user.controller");
 const userModel = require("../models/user.model");
-const { emailLowerCase } = require('../middleware/emailLowercase');
+const { emailLowerCase, authenticateCheck } = require('../middleware/emailLowercase');
 
-Router.post("/api/registration",emailLowerCase,
+Router.post("/registration", emailLowerCase,
     body("username")
         .not().isEmpty().withMessage("Username is required")
         .isLength({
@@ -13,15 +14,15 @@ Router.post("/api/registration",emailLowerCase,
         }).withMessage("username length must be at least 5 characters"),
     body("email")
         .not().isEmpty().withMessage("Email is required")
-        .isEmail().withMessage("Not email type")
-        .custom(async (value) => {
-            let user = await userModel.findOne({
-                email: value,
-            }).exec();
-            if (user) {
-                return Promise.reject('E-mail is already in use');
-            }
-        }).withMessage('E-mail is already in use'),
+        .isEmail().withMessage("Not email type"),
+    // .custom(async (value) => {
+    //     let user = await userModel.findOne({
+    //         email: value,
+    //     }).exec();
+    //     if (user) {
+    //         return Promise.reject('E-mail is already in use');
+    //     }
+    // }).withMessage('E-mail is already in use'),
 
     body("password")
         .not().isEmpty().withMessage("Password is required")
@@ -49,10 +50,31 @@ Router.post("/api/registration",emailLowerCase,
         })
 
     , userController.registerUser);
-Router.get("/api/fetchuser/:id", userController.singleUser);
-Router.get("/api/fetchusers", userController.getUsers);
-Router.post("/api/updateuser", userController.editUser);
-Router.post("/api/deleteuser", userController.deleteUser);
+
+
+// Router.use(authenticateCheck);
+
+Router.post("/login",
+    body('email')
+        .normalizeEmail()
+        .not().isEmpty().withMessage('Email is empty')
+        .isEmail().withMessage('Not of email type')
+        .custom(async (value) => {
+            let user = await userModel.findOne({
+                email: value
+            })
+            if (!user) {
+                return Promise.reject('Not Authenticated user email');
+            }
+        }).withMessage('Not Authenticated email'),
+
+    body('password')
+        .not().isEmpty().withMessage('Password is required'), userController.loginUser);
+
+Router.get("/fetchuser/:id", userController.singleUser);
+Router.get("/fetchusers", userController.getUsers);
+Router.post("/updateuser", userController.editUser);
+Router.post("/deleteuser", userController.deleteUser);
 
 
 module.exports = Router;

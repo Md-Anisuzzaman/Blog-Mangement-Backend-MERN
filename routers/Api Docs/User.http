@@ -1,0 +1,71 @@
+@protocol = http://
+@hostname = localhost
+@port = 7000
+@host = {{hostname}}:{{port}}
+@endpoint = api/user
+@url = {{protocol}}{{hostname}}:{{port}}/{{endpoint}}
+
+#------------------ API TESTING ----------------#
+
+#Get all users data
+#Need to add pathname with url to get all users data "fetchusers"
+GET {{url}}/fetchusers
+################################
+
+#Get single user data
+#Need to add pathname with url to get single user data "fetchuser"
+# @prompt id Enter id
+GET {{url}}/fetchuser/{{id}}
+################################
+
+# Registration as user
+# Need to add pathname with url to create single user "registration"
+
+POST {{url}}/registration
+content-type: application/json
+
+{
+  "username": "Ethian Zaman",
+  "email": "julu@gmail.com",
+  "password": "123456",
+  "re_password": "123456",
+  "mobile": "01476866",
+  "address": "Sandwip"
+}
+################################
+POST {{url}}/login HTTP/1.1
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkV0aGlhbiBaYW1hbiIsImVtYWlscyI6Imp1bHVAZ21haWwuY29tIiwiaWQiOiI2NGFkMDA5MmI3ZjNhY2I5ZjI2MWViMzAiLCJpYXQiOjE2ODkwNjk3NzV9.J2nPv33Ozg4lxFoiJB27S-Vw1zWGmBhsJ40KgvO1EbI
+
+{
+  "email": "julu@gmail.com",
+  "password": "123456"
+}
+
+
+###############################
+
+# Update a user information
+# Need to add pathname with url to update single user "updateuser"
+POST {{url}}/updateuser HTTP/1.1
+content-type: application/json
+
+{
+  "username": "julu Patka",
+  "id":"64942ba86f32139b5baaef9f"
+}
+################################
+
+# Delete a user 
+# Need to add pathname with url to delete a user "updateuser"
+POST {{url}}/deleteuser HTTP/1.1
+content-type: application/json
+
+{
+  "id":"64acffc5c5791ec73350271b"
+}
+
+
+
+
+
