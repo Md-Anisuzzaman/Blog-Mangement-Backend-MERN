@@ -1,6 +1,5 @@
 const { body } = require('express-validator');
 const express = require('express');
-
 const Router = express.Router();
 const userController = require("../controller/user.controller");
 const userModel = require("../models/user.model");
@@ -75,6 +74,7 @@ Router.get("/fetchuser/:id", userController.singleUser);
 Router.get("/fetchusers", userController.getUsers);
 Router.post("/updateuser", userController.editUser);
 Router.post("/deleteuser", userController.deleteUser);
+Router.post("/rolechange", userController.changeRole);
 
 
 module.exports = Router;

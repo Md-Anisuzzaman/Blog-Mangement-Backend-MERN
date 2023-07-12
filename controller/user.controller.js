@@ -28,7 +28,7 @@ exports.registerUser = async (req, res) => {
                 username,
                 email,
                 _id: newUser._id
-            }, "slarput_hack_korbi_mair", { expiresIn: "1d" })
+            }, process.env.JWT_SECRET, { expiresIn: "1d" })
 
             const storeUser = await newUser.save();
 
@@ -67,7 +67,7 @@ exports.loginUser = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 id: user.id
-            }, "slarput_hack_korbi_mair")
+            }, process.env.JWT_SECRET)
 
             res.status(200).json({
                 status: 'success', data: {
@@ -83,8 +83,6 @@ exports.loginUser = async (req, res) => {
         res.status(404).json(error)
     }
 }
-
-
 
 exports.editUser = async (req, res) => {
     console.log(req.body);
@@ -157,5 +155,23 @@ exports.getUsers = async (req, res) => {
 
     } catch (error) {
         res.status(406).json({ message: error.message });
+    }
+}
+
+exports.changeRole = async (req, res) => {
+    try {
+        const changeId = req.body.id
+        const user = await userModel.findOne({ _id: changeId })
+        if (user) {
+            user.role = req.body.role
+            user.save()
+            res.status(200).json(user)
+        }
+        else{
+            res.status(422).json("user not find to change role")
+        }
+
+    } catch (error) {
+        res.json(error.message)
     }
 }

@@ -8,6 +8,7 @@ const blogRouter = require("./routers/blogs.router");
 const translatorRouter = require("./routers/translator.router");
 const authorRouter = require("./routers/author.router");
 const categoryRouter = require("./routers/category.router");
+const resetPassRouter = require("./routers/resetPass.router");
 
 const port = 7000;
 const server = express();
@@ -29,11 +30,12 @@ try {
 
 /* All router call from there */
 
-server.use("/api/user",userRouter);
+server.use("/api/user", userRouter);
 server.use(blogRouter);
 server.use(translatorRouter);
 server.use(authorRouter);
 server.use(categoryRouter);
+server.use("/api/user", resetPassRouter);
 
 
 server.listen(port, () => {
