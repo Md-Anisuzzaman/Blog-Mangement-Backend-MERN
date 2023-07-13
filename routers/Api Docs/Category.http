@@ -1,0 +1,64 @@
+@protocol = http://
+@hostname = localhost
+@port = 7000 
+@host = {{hostname}}:{{port}}
+@endpoint = api/category
+@url = {{protocol}}{{hostname}}:{{port}}/{{endpoint}}
+
+#------------------ API TESTING ----------------
+
+# get allcategory
+# Need to add pathname with url to verofy a user "allcategory"
+GET {{url}}/allcategory HTTP/1.1
+############################
+
+# get fetchcategory
+# Need to add pathname with url to verofy a user "fetchcategory"
+GET {{url}}/fetchcategory HTTP/1.1
+content-type: application/json
+
+{
+    "id":"649367204b7809e0b6ca9312"
+}
+############################
+
+
+
+# delete a category
+# Need to add pathname with url to verofy a user "createcategory"
+POST {{url}}/createcategory HTTP/1.1
+content-type: application/json
+
+{
+    "name":"Human and Konkal"
+}
+############################
+
+# get Edit category
+# Need to add pathname with url to verofy a user "updatecategory"
+POST {{url}}/updatecategory HTTP/1.1
+content-type: application/json
+
+{
+    "id":"649367204b7809e0b6ca9312",
+    "name":"Buisness"
+}
+############################
+
+# Create category
+# Need to add pathname with url to verofy a user "deletecategory"
+POST {{url}}/deletecategory HTTP/1.1
+content-type: application/json
+
+{
+    "id":"64afe23c5f36e5e3d3a0391e"
+}
+############################
+
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+@protocol = http://
+@hostname = localhost
+@port = 7000
+@host = {{hostname}}:{{port}}
+@endpoint = api/reset
+@url = {{protocol}}{{hostname}}:{{port}}/{{endpoint}}
+
+#------------------ API TESTING ----------------
+
+# reset verify
+# Need to add pathname with url to verofy a user "toverify"
+POST {{url}}/verify HTTP/1.1
+content-type: application/json
+# authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkV0aGlhbiBaYW1hbiIsImVtYWlscyI6Imp1bHVAZ21haWwuY29tIiwiaWQiOiI2NGFkMDA5MmI3ZjNhY2I5ZjI2MWViMzAiLCJpYXQiOjE2ODkwNjk3NzV9.J2nPv33Ozg4lxFoiJB27S-Vw1zWGmBhsJ40KgvO1EbI
+
+{
+  "email": "jul@gmail.com"
+}
+############################
+
+# reset password
+# Need to add pathname with url to verofy a user "passreset"
+POST {{url}}/passreset HTTP/1.1
+content-type: application/json
+
+{
+  "userToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkV0aGlhbiBaYW1hbiIsImVtYWlsIjoianVsdUBnbWFpbC5jb20iLCJpZCI6IjY0YWQwMDkyYjdmM2FjYjlmMjYxZWIzMCIsImlhdCI6MTY4OTIyNDU2OH0.9uxaK9s76N_U8gwymg1m57Gx3RG6C3PcGcZgQBrSyGA",
+  "password": "123456",
+  "re_password": "123456"
+}
+
+
+
+
+
