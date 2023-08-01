@@ -22,8 +22,6 @@ content-type: application/json
 }
 ############################
 
-
-
 # delete a category
 # Need to add pathname with url to verofy a user "createcategory"
 POST {{url}}/createcategory HTTP/1.1

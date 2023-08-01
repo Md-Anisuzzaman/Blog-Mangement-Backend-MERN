@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors')
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const formData = require('express-form-data');
@@ -12,6 +13,7 @@ const resetPassRouter = require("./routers/resetPass.router");
 
 const port = 7000;
 const server = express();
+server.use(cors())
 
 server.use(express.urlencoded({ extended: true }));
 server.use(bodyParser.json());

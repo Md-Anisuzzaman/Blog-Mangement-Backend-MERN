@@ -42,16 +42,13 @@ exports.createBlog = async (req, res) => {
 
 exports.editBlog = async (req, res) => {
     try {
-        const { id, title } = req.body
-
+        const { id, title, description, short_description } = req.bod;
+        
         if (id) {
-
-            const updateBlog = await blogsModel.updateOne(
-                { _id: id },
-                {
-                    title
-                }
-            )
+            const filter = { _id: id }
+            console.log(filter);
+            const update = { $set: { title: title, short_description: short_description, description: description } }
+            const updateBlog = await blogsModel.updateOne(filter, update)
             res.status(200).send(updateBlog)
         }
         else {
