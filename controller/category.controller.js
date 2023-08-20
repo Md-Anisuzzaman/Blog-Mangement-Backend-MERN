@@ -1,23 +1,30 @@
 const categoryModel = require("../models/category.model");
+const ObjectId = require('mongoose').Types.ObjectId;
 const { loginUser } = require("./user.controller");
 
 exports.singleCategory = async (req, res) => {
     try {
-        const id = req.body.id
-        const category = await categoryModel.findOne({ _id: id })
+        const id = req.params.id
+        const category = await categoryModel.findOne({ _id: id})
         // .populate("creator")
         // .populate("blog_creator")
-        res.status(200).json({ category })
+        res.status(200).json(category)
     } catch (error) {
-        res.statu(404).json(error)
+        res.status(404).json(error)
     }
 }
 
 exports.getCategory = async (req, res) => {
     const categories = await categoryModel.find({})
-    const response = categories.map((category) => category._id)
-    res.json(response)
+    // const response = categories.map((category) => category._id)
+    console.log(categories);
+    res.json(categories)
 }
+exports.getCategoryPopulate = async (req, res) => {
+    const categories = await categoryModel.find().populate("creator")
+    res.json(categories)
+}
+
 
 exports.creatCategory = async (req, res) => {
     try {

@@ -6,6 +6,7 @@ Router.post("/createcategory", categoryController.creatCategory);
 Router.post("/updatecategory", categoryController.editCategory);
 Router.post("/deletecategory", categoryController.deleteCategory);
 Router.get("/allcategory", categoryController.getCategory);
-Router.get("/fetchcategory", categoryController.singleCategory);
+Router.get("/fetchcategory/:id", categoryController.singleCategory);
+Router.get("/info", categoryController.getCategoryPopulate);
 
 module.exports = Router;

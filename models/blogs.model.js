@@ -1,4 +1,5 @@
 const { mongoose, Schema } = require('mongoose');
+const ObjectId = require('mongoose').Types.ObjectId;
 const writerModel = require("./author.model");
 
 module.exports = mongoose.model('blogs', mongoose.Schema({
@@ -14,13 +15,17 @@ module.exports = mongoose.model('blogs', mongoose.Schema({
         type: String,
         required: true,
     },
-    category: {
-        type: [Schema.Types.ObjectId],
-        required: true,
-    },
+    category: [{
+        type: Schema.Types.ObjectId,
+        ref: "categories",
+    }],
+    // category: [{
+    //     type: [String],
+    //     ref: "categories",
+    // }],
     creator: {
         type: [Schema.Types.ObjectId],
-        ref: "users"
+        ref: "users",
     },
     author: {
         type: [Schema.Types.ObjectId],
@@ -31,7 +36,7 @@ module.exports = mongoose.model('blogs', mongoose.Schema({
         type: [Schema.Types.ObjectId],
         ref: 'translators',
     },
- 
+
     thumb_image: {
         type: String,
     },

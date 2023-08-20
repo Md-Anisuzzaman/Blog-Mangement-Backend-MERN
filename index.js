@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors')
+const csrf = require('csurf');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const formData = require('express-form-data');
 const { Db_url } = require('./config/db.config');
 const userRouter = require("./routers/user.router");
@@ -10,14 +12,18 @@ const translatorRouter = require("./routers/translator.router");
 const authorRouter = require("./routers/author.router");
 const categoryRouter = require("./routers/category.router");
 const resetPassRouter = require("./routers/resetPass.router");
+const { authenticateCheck } = require('./middleware/middleWareFn');
 
 const port = 7000;
 const server = express();
 server.use(cors())
+server.use(cookieParser());
 
 server.use(express.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 server.use(formData.parse());
+
+const csrfProtection = csrf({ cookie: true });
 
 try {
     mongoose.set("strictQuery", false);

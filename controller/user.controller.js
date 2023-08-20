@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const userModel = require("../models/user.model");
 const jwt = require('jsonwebtoken');
 
+
 exports.registerUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -28,9 +29,11 @@ exports.registerUser = async (req, res) => {
                 username,
                 email,
                 _id: newUser._id
-            }, process.env.JWT_SECRET, { expiresIn: "1d" })
+            }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
 
             const storeUser = await newUser.save();
+
+            res.cookie('jwt', token, { httpOnly: true });
 
             res.status(200).json({
                 storeUser,
@@ -67,7 +70,9 @@ exports.loginUser = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 id: user.id
-            }, process.env.JWT_SECRET)
+            }, process.env.ACCESS_TOKEN_SECRET)
+
+            res.cookie('jwt', token, { httpOnly: true });
 
             res.status(200).json({
                 status: 'success', data: {
@@ -128,6 +133,7 @@ exports.deleteUser = async (req, res) => {
     }
 }
 
+
 exports.singleUser = async (req, res) => {
     try {
         const id = req.params.id
@@ -167,7 +173,7 @@ exports.changeRole = async (req, res) => {
             user.save()
             res.status(200).json(user)
         }
-        else{
+        else {
             res.status(422).json("user not find to change role")
         }
 
@@ -175,3 +181,8 @@ exports.changeRole = async (req, res) => {
         res.json(error.message)
     }
 }
+
+exports.logOut = async () => {
+res.clearCookie('jwt')
+res.json("User successfully logged out")
+};

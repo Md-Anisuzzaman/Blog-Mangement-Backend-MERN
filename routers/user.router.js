@@ -3,7 +3,7 @@ const express = require('express');
 const Router = express.Router();
 const userController = require("../controller/user.controller");
 const userModel = require("../models/user.model");
-const { emailLowerCase, authenticateCheck } = require('../middleware/emailLowercase');
+const { emailLowerCase, authenticateCheck } = require('../middleware/middleWareFn');
 
 Router.post("/registration", emailLowerCase,
     body("username")
@@ -71,10 +71,12 @@ Router.post("/login",
         .not().isEmpty().withMessage('Password is required'), userController.loginUser);
 
 Router.get("/fetchuser/:id", userController.singleUser);
-Router.get("/fetchusers", userController.getUsers);
+Router.use(authenticateCheck)
+// Router.get("/fetchusers", userController.getUsers);
 Router.post("/updateuser", userController.editUser);
 Router.post("/deleteuser", userController.deleteUser);
 Router.post("/rolechange", userController.changeRole);
+Router.post("/logout", userController.logOut);
 
 
 module.exports = Router;
