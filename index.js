@@ -38,9 +38,9 @@ try {
 
 /* All router call from there */
 
-server.use("/api/user", userRouter);
-server.use("/api/reset", resetPassRouter);
-server.use(blogRouter);
+server.use("/api/user",userRouter);
+server.use("/api/reset",resetPassRouter);
+server.use(authenticateCheck,csrfProtection, blogRouter);
 server.use(translatorRouter);
 server.use(authorRouter);
 server.use("/api/category", categoryRouter);
@@ -51,3 +51,4 @@ server.listen(port, () => {
 })
 
 //DLVoupiRNwHRB9qM
+

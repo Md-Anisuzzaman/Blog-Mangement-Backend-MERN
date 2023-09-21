@@ -71,8 +71,7 @@ Router.post("/login",
         .not().isEmpty().withMessage('Password is required'), userController.loginUser);
 
 Router.get("/fetchuser/:id", userController.singleUser);
-Router.use(authenticateCheck)
-// Router.get("/fetchusers", userController.getUsers);
+Router.get("/fetchusers", userController.getUsers);
 Router.post("/updateuser", userController.editUser);
 Router.post("/deleteuser", userController.deleteUser);
 Router.post("/rolechange", userController.changeRole);

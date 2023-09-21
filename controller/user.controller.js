@@ -2,6 +2,7 @@ const { validationResult } = require("express-validator");
 const bcrypt = require('bcrypt');
 const userModel = require("../models/user.model");
 const jwt = require('jsonwebtoken');
+const { generateToken } = require("../middleware/middleWareFn");
 
 
 exports.registerUser = async (req, res) => {
@@ -25,19 +26,35 @@ exports.registerUser = async (req, res) => {
         });
 
         if (!user) {
-            const token = await jwt.sign({
-                username,
-                email,
-                _id: newUser._id
-            }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+            // const token = await jwt.sign({
+            //     username,
+            //     email,
+            //     _id: newUser._id
+            // }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+
+            const payload = {
+                username: user.username,
+                email: user.email,
+                id: user.id
+            }
+            // const accessToken = generateToken()
+            // const refreshToken = generateToken()
+            const accessToken = generateToken(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })
+            const refreshToken = generateToken(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "2m" })
+
 
             const storeUser = await newUser.save();
 
-            res.cookie('jwt', token, { httpOnly: true });
+            res.cookie(
+                'ses_One', accessToken,
+                'ses_Two', refreshToken,
+                { httpOnly: true }
+            );
 
             res.status(200).json({
                 storeUser,
-                token
+                accessToken,
+                refreshToken
             })
         }
         else {
@@ -66,18 +83,40 @@ exports.loginUser = async (req, res) => {
             if (!isMatch) {
                 return res.status(422).json("Password not match");
             }
-            const token = await jwt.sign({
+
+            const payload = {
                 username: user.username,
                 email: user.email,
                 id: user.id
-            }, process.env.ACCESS_TOKEN_SECRET)
 
-            res.cookie('jwt', token, { httpOnly: true });
+            }
+            const accessExpiresIn = Math.floor(Date.now() / 1000) + 1200;
+            const refreshExpiresIn = Math.floor(Date.now() / 1000) + 3600;
+
+
+            const accessToken = await generateToken(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: accessExpiresIn })
+            const refreshToken = await generateToken(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: refreshExpiresIn })
+            // const accessToken = await jwt.sign(option, process.env.ACCESS_TOKEN_SECRET)
+            // const refreshToken = await jwt.sign(option, process.env.REFRESH_TOKEN_SECRET)
+
+            // console.log(accessToken, refreshToken);
+
+            // const obj = {
+            //     cookie1: accessToken,
+            //     cookie2: refreshToken
+            // };
+
+
+            res.cookie('ses_One', accessToken, { httpOnly: true })
+            res.cookie('ses_Two', refreshToken, { httpOnly: true })
+
+
 
             res.status(200).json({
                 status: 'success', data: {
                     result: user,
-                    token
+                    accessToken,
+                    refreshToken
                 }
             })
         }
@@ -183,6 +222,6 @@ exports.changeRole = async (req, res) => {
 }
 
 exports.logOut = async () => {
-res.clearCookie('jwt')
-res.json("User successfully logged out")
+    res.clearCookie('jwt')
+    res.json("User successfully logged out")
 };
