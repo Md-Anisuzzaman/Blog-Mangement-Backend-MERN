@@ -14,14 +14,6 @@ Router.post("/registration", emailLowerCase,
     body("email")
         .not().isEmpty().withMessage("Email is required")
         .isEmail().withMessage("Not email type"),
-    // .custom(async (value) => {
-    //     let user = await userModel.findOne({
-    //         email: value,
-    //     }).exec();
-    //     if (user) {
-    //         return Promise.reject('E-mail is already in use');
-    //     }
-    // }).withMessage('E-mail is already in use'),
 
     body("password")
         .not().isEmpty().withMessage("Password is required")
@@ -34,12 +26,7 @@ Router.post("/registration", emailLowerCase,
         .isLength({
             min: 6,
         }).withMessage("Re - password lentgth must be at least 6 characters")
-        // .custom(async (value) => {
-        //     if (body("password") != value) {
-        //         console.log(body("password"), value);
-        //         return Promise.reject('Re - password not matched with password');
-        //     }
-        // })
+  
         .custom(async (value, {
             req
         }) => {

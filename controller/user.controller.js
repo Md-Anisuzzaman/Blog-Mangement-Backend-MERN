@@ -14,6 +14,7 @@ exports.registerUser = async (req, res) => {
     }
     try {
         const { username, email, password } = req.body
+
         const securePass = await bcrypt.hash(password, 10);
 
         const user = await userModel.findOne({ email: email })
@@ -25,31 +26,30 @@ exports.registerUser = async (req, res) => {
             role: "admin"
         });
 
+
         if (!user) {
-            // const token = await jwt.sign({
-            //     username,
-            //     email,
-            //     _id: newUser._id
-            // }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
 
             const payload = {
-                username: user.username,
-                email: user.email,
-                id: user.id
+                username,
+                email,
+                id: newUser._id
             }
-            // const accessToken = generateToken()
-            // const refreshToken = generateToken()
-            const accessToken = generateToken(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })
-            const refreshToken = generateToken(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "2m" })
 
+            const accessToken = await generateToken(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })
+            const refreshToken = await generateToken(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "2m" })
+            console.log(accessToken, "and refresh token:", refreshToken);
 
             const storeUser = await newUser.save();
 
-            res.cookie(
-                'ses_One', accessToken,
-                'ses_Two', refreshToken,
-                { httpOnly: true }
-            );
+            
+            res.cookie('ses_One', accessToken, { httpOnly: true });
+            res.cookie('ses_Two', refreshToken, { httpOnly: true });
+
+            // res.cookie(
+            //     'ses_One', accessToken,
+            //     'ses_Two', refreshToken,
+            //     { httpOnly: true }
+            // );
 
             res.status(200).json({
                 storeUser,
@@ -61,6 +61,7 @@ exports.registerUser = async (req, res) => {
             res.status(400).json({ status: 'fail', data: "user exists. request can't process" })
         }
     } catch (error) {
+        console.log(error);
         res.status(404).json(error)
     }
 }
